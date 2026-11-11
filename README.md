@@ -3,7 +3,7 @@
 Run from Terminal:
 
 ```bash
-bash "/Users/rikin/Documents/ChatGPT/Machine Learning AOL/wifi-auto/install.command"
+bash "/Users/rikin/Documents/ChatGPT/Work Wi-Fi IP Auto Switching/install.command"
 ```
 
 Enter your administrator password and allow **Pujasera IP** to access Location Services. macOS requires that permission to reveal the connected Wi-Fi name. The app does not request or store geographic coordinates.
@@ -54,4 +54,4 @@ SSID matches are exact and case-sensitive. All listed work networks share these 
 
 Save the file as plain-text JSON. Changes are read every five seconds; no rebuild, reinstall, or app restart is required. If JSON or settings are invalid or missing, the menu shows **IP: config error**, requests stop, and the app leaves network settings alone. Fix and save the file to resume. Requests already being processed can still finish.
 
-The installer copies `wifi-auto/config.json` only on first installation and preserves the active configuration on subsequent installs. Editing the workspace copy after installation does not change the active settings. Use the menu to edit the active file.
+The installer copies `config.json` only on first installation and preserves the active configuration on subsequent installs. Editing the workspace copy after installation does not change the active settings. Use the menu to edit the active file.
