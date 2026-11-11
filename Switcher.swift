@@ -10,9 +10,9 @@ final class Switcher: NSObject, NSApplicationDelegate, CLLocationManagerDelegate
     var candidate = ""
     var count = 0
     let request = FileManager.default.homeDirectoryForCurrentUser
-        .appendingPathComponent("Library/Application Support/PujaseraIP/request")
+        .appendingPathComponent("Library/Application Support/NetworkIPSwitching/request")
     let configuration = FileManager.default.homeDirectoryForCurrentUser
-        .appendingPathComponent("Library/Application Support/PujaseraIP/config.json")
+        .appendingPathComponent("Library/Application Support/NetworkIPSwitching/config.json")
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         status = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -48,7 +48,7 @@ final class Switcher: NSObject, NSApplicationDelegate, CLLocationManagerDelegate
         let auth = location.authorizationStatus
         guard auth == .authorizedAlways || auth == .authorized else {
             status.button?.title = "IP: permission"
-            status.button?.toolTip = "Allow Pujasera IP in System Settings → Privacy & Security → Location Services."
+            status.button?.toolTip = "Allow Automatic Network IP Switching in System Settings → Privacy & Security → Location Services."
             invalidate()
             return
         }
@@ -61,11 +61,10 @@ final class Switcher: NSObject, NSApplicationDelegate, CLLocationManagerDelegate
         // Require two consecutive observations to avoid acting during a handover.
         if candidate == ssid { count += 1 } else { candidate = ssid; count = 1 }
         guard count >= 2 else { invalidate(reset: false); return }
-        let mode = settings.work_ssids.contains(ssid) ? "manual" : "dhcp"
-        let addresses = mode == "manual" ? " \(settings.ip_address) \(settings.subnet_mask) \(settings.router)" : ""
+        let mode = settings.network(for: ssid) == nil ? "dhcp" : "manual"
         do {
-            try "\(mode) \(Int(Date().timeIntervalSince1970))\(addresses)\n".write(to: request, atomically: true, encoding: .utf8)
-            status.button?.title = mode == "manual" ? "IP: work" : "IP: DHCP"
+            try settings.request(for: ssid, timestamp: Int(Date().timeIntervalSince1970)).write(to: request, atomically: true, encoding: .utf8)
+            status.button?.title = mode == "manual" ? "IP: manual" : "IP: DHCP"
             status.button?.toolTip = "Network: \(ssid). Requested \(mode); service checks every 5 seconds."
         } catch {
             status.button?.title = "IP: error"

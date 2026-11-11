@@ -1,6 +1,22 @@
 {
-  "work_ssids": ["Pujasera"],
-  "ip_address": "172.16.3.100",
-  "subnet_mask": "255.255.255.0",
-  "router": "172.16.3.1"
+  "network_list": [
+    {
+      "ssids": [
+        "Office",
+        "Office5G"
+      ],
+      "ip": "192.168.10.100",
+      "subnet": "255.255.255.0",
+      "gateway": "192.168.10.1"
+    },
+    {
+      "ssids": [
+        "Home",
+        "Home5G"
+      ],
+      "ip": "192.168.20.100",
+      "subnet": "255.255.255.0",
+      "gateway": "192.168.20.1"
+    }
+  ]
 }
